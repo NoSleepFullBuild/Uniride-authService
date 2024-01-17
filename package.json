@@ -13,6 +13,7 @@
   },
   "keywords": [],
   "dependencies": {
+    "@nosleepfullbuild/uniride-library": "1.1.0",
     "@types/express": "^4.17.20",
     "@types/node": "^20.8.9",
     "bcrypt": "^5.1.1",
