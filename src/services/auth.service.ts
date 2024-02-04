@@ -3,6 +3,7 @@ import {User} from '../entities/user/users.entity';
 
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
+import { Token } from "../entities/user/token.entity";
 
 export class AuthService {
 
@@ -55,7 +56,58 @@ export class AuthService {
         return user;
     }
 
-    async logout() {
-        return true;
+    async logout(token: string) {
+
+        try {
+            const decoded: any = jwt.verify(token, 'secret');
+
+            const invalidToken = new Token();
+            invalidToken.token = token;
+            invalidToken.expiration = decoded.exp;
+            await AppDataSource.getRepository(Token).save(invalidToken);
+
+            return true;
+
+        } catch (error) {
+            throw new Error('Failed to logout.');
+        }
     }
+
+    async whoAmI(token: string) {
+
+        try {
+            const decoded = jwt.verify(token, 'secret');
+            
+            const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
+            if (!user) {
+                throw new Error('User not found');
+            }
+            
+            return { email: user.email, username: user.username };
+
+        } catch (error) {
+            throw new Error('Failed to authenticate token.');
+        }
+    }
+
+    async verifyToken(token: string): Promise<any> {
+        try {
+            const isBlacklisted = await AppDataSource.getRepository(Token).findOneBy({ token });
+            if (isBlacklisted) {
+                throw new Error('Token is invalidated.');
+            }
+    
+            const decoded: any = jwt.verify(token, 'secret');
+                        const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
+            if (!user) {
+                throw new Error('User not found');
+            }
+            
+            return { id: user.id, email: user.email, username: user.username };
+        } catch (error) {
+            throw new Error('Failed to verify token.');
+        }
+    }
+    
+
 }

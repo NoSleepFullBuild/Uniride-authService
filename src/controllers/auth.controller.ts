@@ -31,6 +31,17 @@ export class AuthController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async logout(req: Request, res: Response) {
+        try {
+            const token = req.headers["authorization"]?.split(" ")[1];
+            if (!token) throw new Error("No token provided.");
+            await this.authService.logout(token);
+            res.status(200).json({ message: 'User logged out' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
     
 
 }
