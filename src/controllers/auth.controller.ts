@@ -42,6 +42,30 @@ export class AuthController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async verifyToken(req: Request, res: Response) {
+        
+        try {
+            const token = req.headers["authorization"]?.split(" ")[1];
+            if (!token) throw new Error("No token provided.");
+            const response = await this.authService.verifyToken(token);
+            res.status(200).json(response);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    async whoIam(req: Request, res: Response) {
+
+        try {
+            const token = req.headers["authorization"]?.split(" ")[1];
+            if (!token) throw new Error("No token provided.");
+            const response = await this.authService.whoAmI(token);
+            res.status(200).json(response);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
     
 
 }

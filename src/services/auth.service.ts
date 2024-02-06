@@ -76,16 +76,19 @@ export class AuthService {
     async whoAmI(token: string) {
 
         try {
-            const decoded = jwt.verify(token, 'secret');
-            
-            const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
-            if (!user) {
-                throw new Error('User not found');
+
+            const isBlacklisted = await AppDataSource.getRepository(Token).findOneBy({ token });
+            if (isBlacklisted) {
+                throw new Error('Token is invalidated.');
             }
+    
+            const decoded: any = jwt.verify(token, 'secret');
+            const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
             
-            return { email: user.email, username: user.username };
+            return { id: user.id, email: user.email, username: user.username };
 
         } catch (error) {
+            console.log(error)
             throw new Error('Failed to authenticate token.');
         }
     }
@@ -98,12 +101,13 @@ export class AuthService {
             }
     
             const decoded: any = jwt.verify(token, 'secret');
-                        const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
+            const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
             if (!user) {
                 throw new Error('User not found');
             }
             
-            return { id: user.id, email: user.email, username: user.username };
+        return { id: user.id, email: user.email, username: user.username };
+        
         } catch (error) {
             throw new Error('Failed to verify token.');
         }

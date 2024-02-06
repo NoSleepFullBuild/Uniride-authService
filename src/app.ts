@@ -19,9 +19,9 @@ const authController = new AuthController();
 
 app.post('/api/auth/login', authController.login.bind(authController));
 app.post('/api/auth/register', authController.register.bind(authController));
+app.get('/api/auth/verify-token', authController.verifyToken.bind(authController));
 app.post('/api/auth/logout', checkJwt, authController.logout.bind(authController));
-
-
+app.get('/api/auth/whoiam', authController.whoIam.bind(authController));
 
 app.listen(3000,() => {
     console.log("Auth service is running on port 3000")
