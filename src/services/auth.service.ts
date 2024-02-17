@@ -1,15 +1,14 @@
 import {AppDataSource} from "../app-data-source"
-import {User} from '../entities/user/users.entity';
-
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
-import { Token } from "../entities/user/token.entity";
+import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token.entity";
+import { Auth } from "@nosleepfullbuild/uniride-library/dist/entity/auth/auth.entity";
 
 export class AuthService {
 
     async login(email : string, password : string) {
         const user = await AppDataSource
-            .getRepository(User)
+            .getRepository(Auth)
             .findOneBy({email});
         if (!user) {
             throw new Error('User not found');
@@ -28,11 +27,12 @@ export class AuthService {
     }
 
     async register(email : string, username : string, password : string) {
+        
         const userExist = await AppDataSource
-            .getRepository(User)
+            .getRepository(Auth)
             .findOneBy({email});
         if (userExist) {
-            throw new Error('User already exist');
+            throw new Error('Auth already exist');
         }
 
         const userdata = {
@@ -47,8 +47,9 @@ export class AuthService {
         console.log(userdata)
 
         const hashedPassword = await bcrypt.hash(password, 10);
+
         const user = await AppDataSource
-            .getRepository(User)
+            .getRepository(Auth)
             .save({
                 ...userdata,
                 password: hashedPassword
@@ -83,9 +84,9 @@ export class AuthService {
             }
     
             const decoded: any = jwt.verify(token, 'secret');
-            const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
+            const user = await AppDataSource.getRepository(Auth).findOneBy({ id: decoded.id });
             
-            return { id: user.id, email: user.email, username: user.username };
+            return { authId: user.id, email: user.email, username: user.username };
 
         } catch (error) {
             console.log(error)
@@ -101,7 +102,7 @@ export class AuthService {
             }
     
             const decoded: any = jwt.verify(token, 'secret');
-            const user = await AppDataSource.getRepository(User).findOneBy({ id: decoded.id });
+            const user = await AppDataSource.getRepository(Auth).findOneBy({ id: decoded.id });
             if (!user) {
                 throw new Error('User not found');
             }

@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "@nosleepfullbuild/uniride-library": "1.1.0",
+    "@nosleepfullbuild/uniride-library": "1.1.6",
     "@types/express": "^4.17.20",
     "@types/node": "^20.8.9",
     "bcrypt": "^5.1.1",
@@ -31,6 +31,9 @@
     "up": "^1.0.2"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2"
+    "@types/bcrypt": "^5.0.2",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2"
   }
 }

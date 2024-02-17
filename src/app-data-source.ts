@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm"
 import 'reflect-metadata';
+import { Auth } from "@nosleepfullbuild/uniride-library/dist/entity/auth/auth.entity";
+import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token.entity";
 
 export const AppDataSource = new DataSource({
     host: 'localhost',
@@ -10,7 +12,7 @@ export const AppDataSource = new DataSource({
     type: 'postgres',
     synchronize: true,
     logging: false,
-    entities: ['src/entities/**/*.entity{.ts,.js}'],
+    entities: [Auth, Token],
     migrations: ['src/migrations/**/*{.ts,.js}'],
     subscribers: ['src/subscribers/**/*{.ts,.js}'],
 });

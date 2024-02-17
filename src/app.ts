@@ -2,10 +2,12 @@ import * as express from "express"
 import { AppDataSource } from "./app-data-source"
 import { AuthController } from "./controllers/auth.controller";
 import { checkJwt } from "./middleware/utils";
+import createDefaultAuth from "./seed";
 
 AppDataSource
     .initialize()
-    .then(() => {
+    .then(async () => {
+        await createDefaultAuth();
         console.log("Data Source has been initialized!")
     })
     .catch((err) => {
