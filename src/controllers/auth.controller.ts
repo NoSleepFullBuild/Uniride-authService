@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
 import { Authentification } from '../middleware/authentification';
+import { Counter } from 'prom-client';
+
+const loginCounter = new Counter({
+  name: 'auth_service_logins_total',
+  help: 'Total number of logins',
+});
 
 export class AuthController {
 
@@ -11,8 +17,10 @@ export class AuthController {
         this.authService = new AuthService();
         this.authentification = new Authentification();
     }
+    
 
     async login(req: Request, res: Response) {
+
         try {
 
             const { email, password } = req.body;
@@ -20,6 +28,8 @@ export class AuthController {
             if(!email || !password) return res.status(400).json({ error: 'Missing fields' });
 
             const response = await this.authService.login(email, password);
+
+            loginCounter.inc();
 
             res.status(200).json(response);
             
@@ -31,7 +41,7 @@ export class AuthController {
     async register(req: Request, res: Response) {
 
         try {
-            const { email, username, password } = req.body;
+            const { email, username, password, token } = req.body;
             
             if(!email || !username || !password) return res.status(400).json({ error: 'Missing fields' });
 
@@ -41,9 +51,7 @@ export class AuthController {
 
             if(!this.authentification.checkoutPassword(password)) return res.status(400).json({ error: 'Invalid password, 8 minimum caracters' });
 
-            console.log("register", email, username, password)
-            const user = await this.authService.register(email, username, password);
-            console.log(user)
+            const user = await this.authService.register(email, username, password, token);
             res.status(201).json({ message: 'Auth created', user });
 
         } catch (error) {
@@ -68,16 +76,19 @@ export class AuthController {
     }
 
     async verifyToken(req: Request, res: Response) {
-        
         try {
-            const token = req.headers["authorization"]?.split(" ")[1];
-            if (!token) throw new Error("No token provided.");
-            const response = await this.authService.verifyToken(token);
-            res.status(200).json(response);
+          const token = req.headers["authorization"]?.split(" ")[1];
+          if (!token) throw new Error("No token provided.");
+          const response = await this.authService.verifyToken(token); 
+          if (response.error) {
+            return res.status(500).json({ error: response.error });
+          }
+          res.status(200).json(response);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+          res.status(500).json({ error: error.message || "An error occurred" });
         }
-    }
+      }
+      
 
     async whoIam(req: Request, res: Response) {
 
@@ -87,9 +98,11 @@ export class AuthController {
             const response = await this.authService.whoAmI(token);
             res.status(200).json(response);
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: error.message });
         }
     }
+    
     
 
 }

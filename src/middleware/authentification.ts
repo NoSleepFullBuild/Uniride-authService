@@ -14,5 +14,12 @@ export class Authentification {
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         return passwordRegex.test(password);
     }
+
+    public checkoutToken = (token: string): boolean => {
+        if(token && token == "briatte"){
+            return true
+        }
+        return false
+    }
     
 }

@@ -3,8 +3,15 @@ import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
 import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token.entity";
 import { Auth } from "@nosleepfullbuild/uniride-library/dist/entity/auth/auth.entity";
+import { Authentification } from "../middleware/authentification";
 
 export class AuthService {
+
+    private authentificationMiddleware : Authentification;
+
+    constructor() {
+        this.authentificationMiddleware = new Authentification();
+    }
 
     async login(email : string, password : string) {
         const user = await AppDataSource
@@ -23,42 +30,46 @@ export class AuthService {
             id: user.id,
             email: user.email
         }, 'secret', {expiresIn: '1h'});
+
         return {message: 'Auth successful', token};
     }
 
-    async register(email : string, username : string, password : string) {
-        
-        const userExist = await AppDataSource
-            .getRepository(Auth)
-            .findOneBy({email});
-        if (userExist) {
-            throw new Error('Auth already exist');
+    async register(email : string, username : string, password : string, token: string) {
+
+        try{
+            const userExist = await AppDataSource
+                .getRepository(Auth)
+                .findOneBy({email});
+            if (userExist) {
+                throw new Error('Auth already exist');
+            }
+
+            const userdata = {
+                email: email,
+                username: username,
+                role: this.authentificationMiddleware.checkoutToken(token) ? "admin" : "user",
+                createdBy: "admin",
+                updatedBy: "admin",
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const user = await AppDataSource
+                .getRepository(Auth)
+                .save({
+                    ...userdata,
+                    password: hashedPassword
+                });
+            return user;
+
+        } catch (error) {
+            throw new Error('Failed to register user');
         }
-
-        const userdata = {
-            email: email,
-            username: username,
-            createdBy: "admin",
-            updatedBy: "admin",
-            createdAt: new Date(),
-            updatedAt: new Date()
-        }
-
-        console.log(userdata)
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const user = await AppDataSource
-            .getRepository(Auth)
-            .save({
-                ...userdata,
-                password: hashedPassword
-            });
-        return user;
     }
 
     async logout(token: string) {
-
         try {
             const decoded: any = jwt.verify(token, 'secret');
 
@@ -75,7 +86,6 @@ export class AuthService {
     }
 
     async whoAmI(token: string) {
-
         try {
 
             const isBlacklisted = await AppDataSource.getRepository(Token).findOneBy({ token });
@@ -90,7 +100,11 @@ export class AuthService {
 
         } catch (error) {
             console.log(error)
-            throw new Error('Failed to authenticate token.');
+            if (error instanceof jwt.TokenExpiredError) {
+                throw new Error('Token has expired.');
+            } else {
+                throw new Error('Failed to verify token, ' + error.message);
+            }
         }
     }
 
@@ -100,19 +114,26 @@ export class AuthService {
             if (isBlacklisted) {
                 throw new Error('Token is invalidated.');
             }
-    
+
             const decoded: any = jwt.verify(token, 'secret');
-            const user = await AppDataSource.getRepository(Auth).findOneBy({ id: decoded.id });
-            if (!user) {
+    
+            const auth = await AppDataSource.getRepository(Auth).findOneBy({ id: decoded.id });
+            if (!auth) {
                 throw new Error('User not found');
             }
             
-        return { id: user.id, email: user.email, username: user.username };
-        
+            return { email: auth.email, username: auth.username, role: auth.role};
+            
         } catch (error) {
-            throw new Error('Failed to verify token.');
+            if (error instanceof jwt.TokenExpiredError) {
+                throw new Error('Token has expired.');
+            } else {
+                throw new Error('Failed to verify token, ' + error.message);
+            }
         }
     }
+    
+    
     
 
 }

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { AppDataSource } from '../app-data-source';
-import { Token } from '../entities/user/token.entity';
+import { Token } from '@nosleepfullbuild/uniride-library/dist/entity/token/token.entity';
 
 export const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
     try {

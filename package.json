@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "@nosleepfullbuild/uniride-library": "1.1.6",
+    "@nosleepfullbuild/uniride-library": "1.1.9",
     "@types/express": "^4.17.20",
     "@types/node": "^20.8.9",
     "bcrypt": "^5.1.1",
@@ -26,6 +26,7 @@
     "mongoose": "^7.6.5",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
+    "prom-client": "^15.1.0",
     "typeorm": "^0.3.19",
     "typescript": "^5.2.2",
     "up": "^1.0.2"

@@ -14,6 +14,7 @@ async function createDefaultAuth() {
                 email: "seed@user.com",
                 username: "seed",
                 password: "seed",
+                role: "user",
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: "system",
