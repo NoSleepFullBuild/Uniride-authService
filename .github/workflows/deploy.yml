@@ -29,13 +29,17 @@ jobs:
             if [ ! -d "./authService" ]; then
               git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git
             fi
-            // copy .env file if not exists
-            if [ ! -f ".env" ]; then
-              cp .env.local .env
-            fi
             cd authService
+            cat .env
             git fetch
             git checkout develop
             git pull origin develop
+
+        - name: Install package from private repository
+          run: npm install git+https://${{ secrets.TOKEN_REPO }}/nosleepfullbuild/uniride-library@latest
+          
+        - name: Build and deploy Docker containers
+          run: |
+            cd ~/projects/uniride/authService
             docker-compose up -d --build
 
