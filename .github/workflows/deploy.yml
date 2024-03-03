@@ -27,8 +27,10 @@ jobs:
           script: |
             cd ~/projects/uniride
             if [ ! -d "./authService" ]; then
-              mkdir authService
-              git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git authService
+              git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git
+            fi
+            if [ ! -d ".env" ]; then
+              cp .env.local .env
             fi
             cd authService
             git fetch
