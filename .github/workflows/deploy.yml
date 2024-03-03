@@ -17,7 +17,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: executing remote ssh commands using password
+      - name: executing remote ssh commands using password and pull the latest code
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -27,7 +27,8 @@ jobs:
           script: |
             cd /projects/uniride
             if [ ! -d "./authService" ]; then
-            git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git authService
+              mkdir authService
+              git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git authService
             fi
             cd authService
             git pull origin main
