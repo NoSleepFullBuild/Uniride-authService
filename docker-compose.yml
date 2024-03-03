@@ -1,10 +1,11 @@
 version: '3.8'
 services:
   app:
-    container_name: express-api
-    build: .
+    container_name: auth-api
+    build: 
+      context: .
     ports:
-      - "3000:3000"
+      - "3005:3000"
     environment:
       NODE_ENV: production
       DB_HOST: db
@@ -13,12 +14,7 @@ services:
       DB_PASS: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB}
       AUTH_TOKEN: ${_authToken}
-    depends_on:
-      - db
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     command: ["npm", "start"]
-
-volumes:
-  postgres-data:
