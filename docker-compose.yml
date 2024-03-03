@@ -4,6 +4,7 @@ services:
     container_name: auth-api
     build: 
       context: .
+      target: production # Spécifie l'étape de production du Dockerfile
     ports:
       - "3005:3000"
     environment:
@@ -15,6 +16,4 @@ services:
       DB_NAME: ${POSTGRES_DB}
       AUTH_TOKEN: ${_authToken}
     volumes:
-      - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: ["npm", "start"]
