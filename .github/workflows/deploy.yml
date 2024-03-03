@@ -17,7 +17,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: executing remote ssh commands using password and pull the latest code
+      - name: Executing remote ssh commands to deploy the application
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -34,13 +34,6 @@ jobs:
             git fetch
             git checkout develop
             git pull origin develop
-
-      - name: Install package from private repository
-        run: npm install git+https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/nosleepfullbuild/uniride-library.git
-
-      - name: Build and deploy Docker containers
-        run: |
-          ls -la
-          docker-compose up -d --build
-          docker ps -a
-
+            npm install git+https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/nosleepfullbuild/uniride-library.git
+            docker-compose up -d --build
+            docker ps -a
