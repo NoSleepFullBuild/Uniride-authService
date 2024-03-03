@@ -25,9 +25,9 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-             cd /projects/uniride
-             if [ ! -d "./authService" ]; then
-              git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git authService
+            cd /projects/uniride
+            if [ ! -d "./authService" ]; then
+            git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git authService
             fi
             cd authService
             git pull origin main
