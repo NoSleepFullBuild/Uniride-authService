@@ -20,12 +20,12 @@ jobs:
       - name: Deploy code
         uses: appleboy/ssh-action@master
         with:
-        host: 91.68.22.198
-        port: 54982
-        username: matthias
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd /projects/uniride
-          git pull origin main
-          npm install
-          npm run build
+          host: 91.68.22.198
+          port: 54982
+          username: matthias
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /projects/uniride
+            git pull origin main
+            npm install
+            npm run build
