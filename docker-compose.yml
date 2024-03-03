@@ -1,12 +1,11 @@
 version: '3.8'
+
 services:
   app:
     container_name: auth-api
-    build: 
-      context: .
-      target: production # Spécifie l'étape de production du Dockerfile
+    build: .
     ports:
-      - "3005:3000"
+      - "3005:3004"
     environment:
       NODE_ENV: production
       DB_HOST: db
