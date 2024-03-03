@@ -35,11 +35,11 @@ jobs:
             git checkout develop
             git pull origin develop
 
-        - name: Install package from private repository
-          run: npm install git+https://${{ secrets.TOKEN_REPO }}/nosleepfullbuild/uniride-library@latest
-          
-        - name: Build and deploy Docker containers
-          run: |
-            cd ~/projects/uniride/authService
-            docker-compose up -d --build
+      - name: Install package from private repository
+        run: npm install git+https://${{ secrets.TOKEN_REPO }}/nosleepfullbuild/uniride-library@latest
+        
+      - name: Build and deploy Docker containers
+        run: |
+          cd ~/projects/uniride/authService
+          docker-compose up -d --build
 
