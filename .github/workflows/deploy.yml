@@ -29,7 +29,8 @@ jobs:
             if [ ! -d "./authService" ]; then
               git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git
             fi
-            if [ ! -d ".env" ]; then
+            // copy .env file if not exists
+            if [ ! -f ".env" ]; then
               cp .env.local .env
             fi
             cd authService
