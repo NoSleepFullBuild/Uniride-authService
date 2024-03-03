@@ -40,6 +40,6 @@ jobs:
 
       - name: Build and deploy Docker containers
         run: |
-          cd ~/projects/uniride/authService
+          ls -la
           docker-compose up -d --build
 
