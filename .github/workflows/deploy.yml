@@ -31,4 +31,8 @@ jobs:
               git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git authService
             fi
             cd authService
-            git pull origin main
+            git fetch
+            git checkout develop
+            git pull origin develop
+            docker-compose up -d --build
+
