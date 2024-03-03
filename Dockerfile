@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Étape de production
-FROM node:14
+FROM node:14 AS production
 WORKDIR /usr/app
 COPY --from=builder /usr/src/app/dist ./dist
 COPY package*.json ./
