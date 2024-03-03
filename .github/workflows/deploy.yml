@@ -16,15 +16,17 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy project
-        run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << EOF
-            set -e
-            cd /projects/uniride
-            if [ ! -d "./authService" ]; then
-              git clone your_repository_URL authService
-            fi
-            cd authService
-            git pull origin develop
-          EOF
+      
+      - name: Deploy code
+        uses: appleboy/ssh-action@master
+        with:
+        host: ${{ secrets.SERVER_IP }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SERVER_USER }}
+        username: matthias
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /projects/uniride
+          git pull origin main
+          npm install
+          npm run build
