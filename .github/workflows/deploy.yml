@@ -49,4 +49,5 @@ jobs:
             export DB_PASSWORD=${{ secrets.DB_PASSWORD  }}
             EXPORT TOKEN_REPO=${{ secrets.TOKEN_REPO }}
             docker-compose down
-            docker-compose up -d --build auth_service
+            docker-compose build --no-cache auth_service
+
