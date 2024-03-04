@@ -37,6 +37,7 @@ jobs:
               git fetch
               git checkout develop
             fi
+            npm install git+https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/nosleepfullbuild/uniride-library.git
             npm install
             npm run build
             export DB_HOST=${{ secrets.DB_HOST }}
@@ -44,5 +45,5 @@ jobs:
             export DB_NAME=${{ secrets.DB_NAME_DEV  }}
             export DB_USER=${{ secrets.DB_USER  }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD  }}
-            docker-compose down
-            docker-compose up -d --build auth_service
+            EXPORT TOKEN_REPO=${{ secrets.TOKEN_REPO }}
+            npm run start
