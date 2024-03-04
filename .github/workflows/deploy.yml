@@ -28,3 +28,6 @@ jobs:
           docker build --no-cache --build-arg TOKEN_REPO=${{ secrets.TOKEN_REPO }} -t ${{ secrets.DOCKER_USERNAME }}/uniride-auth-service . && \
           docker tag ${{ secrets.DOCKER_USERNAME }}/uniride-auth-service ${{ secrets.DOCKER_USERNAME }}/uniride-auth-service:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/uniride-auth-service:latest
+
+      continue-on-error: true
+
