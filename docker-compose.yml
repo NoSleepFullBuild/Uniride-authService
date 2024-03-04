@@ -6,7 +6,7 @@ services:
       args:
         - TOKEN_REPO=${TOKEN_REPO}
     ports:
-      - "3002:3002"
+      - "3003:3002"
     environment:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
