@@ -14,9 +14,9 @@ services:
       DB_PASS: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB}
       AUTH_TOKEN: ${_authToken}
-    volumes:
-      - /usr/src/app/node_modules
-
+    depends_on:
+      - db
+      
   db:
     image: postgres-uniride-auth-dev 
     ports:
