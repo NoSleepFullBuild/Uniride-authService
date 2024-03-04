@@ -1,0 +1,9 @@
+services:
+  auth_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - TOKEN_REPO=${TOKEN_REPO}
+    ports:
+      - "3004:3004"
