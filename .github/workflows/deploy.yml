@@ -37,9 +37,12 @@ jobs:
               git fetch
               git checkout develop
             fi
+            echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+            echo "DB_PORT=${{ secrets.DB_AUTH_PORT_DEV }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
+            echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "TOKEN_REPO=${{ secrets.TOKEN_REPO }}" >> .env
             # Correction : Assurez-vous que la version de Node.js est vérifiée dans le conteneur Docker et non sur le serveur hôte
             docker-compose down
-            docker-compose build --no-cache auth_service
-            # Exécutez cette commande pour vérifier la version de Node dans le conteneur nouvellement construit
-            docker run --rm your-service-name node -v
             docker-compose up -d
