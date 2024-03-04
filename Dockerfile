@@ -15,10 +15,8 @@ RUN npm install
 # Im using Typescript
 
 COPY . .
-
 RUN npm run build
-
-EXPOSE 3004
+EXPOSE 3002
 
 CMD [ "npm", "start" ]
 
