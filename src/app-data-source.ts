@@ -7,11 +7,11 @@ import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token
 require('dotenv').config();
 
 export const AppDataSource = new DataSource({
-    host: "91.68.22.198",
+    host: "localhost",
     port: 5443,
-    username: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB,
+    username: "user",
+    password: "password",
+    database: "postgresAuth",
     type: 'postgres',
     synchronize: false,
     logging: false,
