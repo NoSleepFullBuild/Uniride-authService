@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm"
+import { DataSource } from "typeorm";
 import 'reflect-metadata';
 import { Auth } from "@nosleepfullbuild/uniride-library/dist/entity/auth/auth.entity";
 import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token.entity";
@@ -7,8 +7,8 @@ import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token
 require('dotenv').config();
 
 export const AppDataSource = new DataSource({
-    host: "host.docker.internal",
-    port: 5443,
+    host: "db_auth",
+    port: 5432,
     username: "user",
     password: "password",
     database: "postgresAuth",
@@ -19,5 +19,3 @@ export const AppDataSource = new DataSource({
     // migrations: ['src/migrations/**/*{.ts,.js}'],
     subscribers: ['src/subscribers/**/*{.ts,.js}'],
 });
-
-  

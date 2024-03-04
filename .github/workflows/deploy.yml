@@ -35,5 +35,3 @@ jobs:
             git checkout develop
             git pull origin develop
             npm install git+https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/nosleepfullbuild/uniride-library.git
-            docker-compose up -d --build
-            docker ps -a
