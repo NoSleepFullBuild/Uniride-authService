@@ -7,7 +7,7 @@ import { Token } from "@nosleepfullbuild/uniride-library/dist/entity/token/token
 require('dotenv').config();
 
 export const AppDataSource = new DataSource({
-    host: "localhost",
+    host: "host.docker.internal",
     port: 5443,
     username: "user",
     password: "password",
