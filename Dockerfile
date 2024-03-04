@@ -6,5 +6,5 @@ COPY . .
 RUN npm run build
 
 EXPOSE 3004
-
+RUN ls -la
 CMD ["node", "dist/index.js"]
