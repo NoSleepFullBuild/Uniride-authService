@@ -1,5 +1,4 @@
-# Étape 1: Définir l'image de base
-FROM node:14
+FROM node:latest
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
