@@ -23,4 +23,4 @@ RUN npm run build
 # Étape 4: Exposer le port de l'application
 EXPOSE 3004
 
-RUN npm run start --ignore-errors
+RUN npm run start
