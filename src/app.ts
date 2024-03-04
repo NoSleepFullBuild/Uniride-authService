@@ -36,6 +36,6 @@ app.get('/api/auth/verify-token', authController.verifyToken.bind(authController
 app.post('/api/auth/logout', checkJwt, authController.logout.bind(authController));
 app.get('/api/auth/whoiam', authController.whoIam.bind(authController));
 
-app.listen(3002, () => {
+app.listen(3002, '0.0.0.0', () => {
     console.log("Auth service is running on port 3002");
 });
