@@ -16,3 +16,17 @@ services:
       AUTH_TOKEN: ${_authToken}
     volumes:
       - /usr/src/app/node_modules
+
+  db:
+    image: postgres-uniride-auth-dev 
+    ports:
+      - "5443:5432" 
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
