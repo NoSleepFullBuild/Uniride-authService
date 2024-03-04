@@ -24,5 +24,4 @@ RUN npm run build
 # Étape 4: Exposer le port de l'application
 EXPOSE 3004
 
-# Étape 5: Définir la commande pour démarrer l'application
-CMD ["node", "dist/app.js"]
+RUN npm run start
