@@ -25,6 +25,5 @@ jobs:
 
       - name: Build and push
         run: |
-          docker build --build-arg TOKEN_REPO=${{ secrets.TOKEN_REPO }} -t ${DOCKERHUB_USERNAME}/uniride-auth-service .
-          docker tag ${DOCKERHUB_USERNAME}/uniride-auth-service ${DOCKERHUB_USERNAME}/uniride-auth-service:latest
-          docker push ${DOCKERHUB_USERNAME}/uniride-auth-service:latest
+          docker build --build-arg TOKEN_REPO=${{ secrets.TOKEN_REPO }} -t ${{ secrets.DOCKERHUB_USERNAME }}/uniride-auth-service .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/uniride-auth-service:latest
