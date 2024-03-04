@@ -17,6 +17,7 @@ RUN npm install git+https://${TOKEN_REPO}:x-oauth-basic@github.com/nosleepfullbu
 
 # Copier le reste du code source de l'application dans le conteneur
 COPY . .
+COPY .env.local .env
 
 # Étape 3: Compiler le code TypeScript en JavaScript
 RUN npm run build
