@@ -37,6 +37,9 @@ jobs:
               git fetch
               git checkout develop
             fi
+            npm cache clean --force
+            rm -rf node_modules
+            node -v
             npm install
             npm run build
             export DB_HOST=${{ secrets.DB_HOST }}
