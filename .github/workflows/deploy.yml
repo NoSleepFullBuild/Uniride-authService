@@ -52,3 +52,4 @@ jobs:
             echo "TOKEN_REPO=${{ secrets.TOKEN_REPO }}" >> .env
             # Correction : Assurez-vous que la version de Node.js est vérifiée dans le conteneur Docker et non sur le serveur hôte
             docker-compose up -d --build
+
