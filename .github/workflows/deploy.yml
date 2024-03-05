@@ -3,28 +3,53 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v4
+        
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy project
-        run: |
-          ssh -o StrictHostKeyChecking=no user@your_server_ip << EOF
-            set -e
-            cd /projects/uniride
-            if [ ! -d "./authService" ]; then
-              git clone your_repository_URL authService
+      - name: Executing remote ssh commands to deploy the application
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/projects/uniride
+            if [ -d "./Uniride-authService" ]; then
+              cd Uniride-authService
+              git fetch
+              git pull origin develop
+              git checkout develop
+            else
+              git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git
+              cd Uniride-authService
+              git fetch
+              git checkout develop
             fi
-            cd authService
-            git pull origin main
-          EOF
+            if [ ! -f ".env" ]; then
+              touch .env
+            else
+              rm .env
+              touch .env
+            fi
+            echo "PORT=${{ secrets.AUTH_PORT_DEV }}" >> .env
+            echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+            echo "DB_PORT=${{ secrets.DB_AUTH_PORT_DEV }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
+            echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "TOKEN_REPO=${{ secrets.TOKEN_REPO }}" >> .env
+            # Correction : Assurez-vous que la version de Node.js est vérifiée dans le conteneur Docker et non sur le serveur hôte
+            docker-compose up -d --build
+
