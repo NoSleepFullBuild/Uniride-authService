@@ -43,6 +43,7 @@ jobs:
               rm .env
               touch .env
             fi
+            echo "PORT=${{ secrets.AUTH_PORT_DEV }}" >> .env
             echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
             echo "DB_PORT=${{ secrets.DB_AUTH_PORT_DEV }}" >> .env
             echo "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
