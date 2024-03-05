@@ -5,6 +5,8 @@ import { checkJwt } from "./middleware/utils";
 import createDefaultAuth from "./seed";
 import { collectDefaultMetrics, register } from 'prom-client';
 
+require('dotenv').config();
+
 AppDataSource.initialize().then(async () => {
     await createDefaultAuth();
     console.log("Data Source has been initialized!");
@@ -37,6 +39,6 @@ app.get('/api/auth/verify-token', authController.verifyToken.bind(authController
 app.post('/api/auth/logout', checkJwt, authController.logout.bind(authController));
 app.get('/api/auth/whoiam', authController.whoIam.bind(authController));
 
-app.listen(3002, '0.0.0.0', () => {
-    console.log("Auth service is running on port 3002");
+app.listen(process.env.PORT, () => {
+    console.log("Auth service is running on port " + process.env.PORT);
 });
