@@ -37,6 +37,12 @@ jobs:
               git fetch
               git checkout develop
             fi
+            if [ ! -f ".env" ]; then
+              touch .env
+            else
+              rm .env
+              touch .env
+            fi
             echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
             echo "DB_PORT=${{ secrets.DB_AUTH_PORT_DEV }}" >> .env
             echo "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
