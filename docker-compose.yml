@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  auth_service:
+  auth_service_prod:
     build:
       context: .
       dockerfile: Dockerfile

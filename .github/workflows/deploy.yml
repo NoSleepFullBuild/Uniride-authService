@@ -29,13 +29,13 @@ jobs:
             if [ -d "./Uniride-authService" ]; then
               cd Uniride-authService
               git fetch
-              git pull origin develop
-              git checkout develop
+              git pull origin main
+              git checkout main
             else
               git clone https://${{ secrets.TOKEN_REPO }}:x-oauth-basic@github.com/NoSleepFullBuild/Uniride-authService.git
               cd Uniride-authService
               git fetch
-              git checkout develop
+              git checkout main
             fi
             if [ ! -f ".env" ]; then
               touch .env
@@ -43,13 +43,12 @@ jobs:
               rm .env
               touch .env
             fi
-            echo "PORT=${{ secrets.AUTH_PORT_DEV }}" >> .env
+            echo "PORT=${{ secrets.AUTH_PORT_PROD }}" >> .env
             echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-            echo "DB_PORT=${{ secrets.DB_AUTH_PORT_DEV }}" >> .env
-            echo "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
+            echo "DB_PORT=${{ secrets.DB_AUTH_PORT_PROD }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> .env
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
             echo "TOKEN_REPO=${{ secrets.TOKEN_REPO }}" >> .env
             # Correction : Assurez-vous que la version de Node.js est vérifiée dans le conteneur Docker et non sur le serveur hôte
             docker-compose up -d --build
-
